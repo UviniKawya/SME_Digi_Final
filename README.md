@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SME Digi Final — simple local setup
 
 This version intentionally uses **PHP `$_SESSION` authentication** only. There are no JWTs and no custom tokens.
@@ -64,3 +65,7 @@ The frontend API base URL is defined in one place only:
 
 It is already set to:
 `http://localhost/SME_Digi_Final/backend/api`
+=======
+# SME_Digi_Final
+An empirical study on the challengers faced by SMEs in Sri Lanka in adopting digital technologies and their impact on business performance
+>>>>>>> 066da1721aefbd3c85baac208662c2f1f793ebf2
