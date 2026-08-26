@@ -1,0 +1,3 @@
+<?php
+require_once '../config/cors.php'; require_once '../config/db.php'; require_once '../config/auth.php'; requireAdmin();
+$totalSmes=(int)$pdo->query('SELECT COUNT(*) FROM smes')->fetchColumn();$totalAssessments=(int)$pdo->query('SELECT COUNT(*) FROM assessment_sessions')->fetchColumn();$industries=$pdo->query('SELECT business_type,COUNT(*) count FROM smes GROUP BY business_type ORDER BY business_type')->fetchAll();$levels=$pdo->query('SELECT level,COUNT(*) count FROM assessment_sessions WHERE assessment_type="Readiness" GROUP BY level')->fetchAll();echo json_encode(['total_smes'=>$totalSmes,'total_assessments'=>$totalAssessments,'industries'=>$industries,'readiness_levels'=>$levels]);
