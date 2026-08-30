@@ -1,71 +1,53 @@
-<<<<<<< HEAD
-# SME Digi Final — simple local setup
+# SME Digi Final — Simple Local Setup
 
-This version intentionally uses **PHP `$_SESSION` authentication** only. There are no JWTs and no custom tokens.
+SME Digi is a web-based Digital Readiness Assessment and SME Support System developed for Sri Lankan SMEs.
 
-## Exact folder name
-Place this whole folder at:
+This version uses **PHP `$_SESSION` authentication** only. There are no JWTs or custom authentication tokens.
 
-`C:\xampp\htdocs\SME_Digi_Final`
+## Research Project
 
-Do not rename it unless you also update `frontend/src/api/api.js`.
+**Title:**  
+An empirical study on the challenges faced by SMEs in Sri Lanka in adopting digital technologies and their impact on business performance.
 
-## 1. Database
-Start Apache and MySQL in XAMPP. Open phpMyAdmin and import these files in order:
+## Exact Folder Name
+
+Place the whole project folder at:
+
+`C:\xampp\htdocs\SME_Digi_Final\`
+
+Do not rename the folder unless you also update the API base URL in:
+
+`frontend/src/api/api.js`
+
+## 1. Database Setup
+
+Start **Apache** and **MySQL** using XAMPP.
+
+Open phpMyAdmin and import the database files in this order:
 
 1. `backend/database/schema.sql`
 2. `backend/database/seed_questions.sql`
 3. `backend/database/seed_recommendations.sql`
 
-The database is exactly: `sme_digi_final`
+Database name:
 
-## 2. Backend check
-Open this in Chrome:
+`SME_Digi_Final`
+
+## 2. Backend Check
+
+Open the following URL in Chrome:
 
 `http://localhost/SME_Digi_Final/backend/api/profile.php`
 
-If you see a JSON message asking you to login, PHP and the backend path are working.
+If a JSON message asking you to log in appears, the PHP backend and project path are working correctly.
 
-## 3. Frontend
-Open VS Code at:
+## 3. Frontend Setup
 
-`C:\xampp\htdocs\SME_Digi_Final\frontend`
+Open the following folder in VS Code:
+
+`C:\xampp\htdocs\SME_Digi_Final\frontend\`
 
 Run:
 
-`npm install`
-
-then:
-
-`npm run dev`
-
-Open in Chrome:
-
-`http://localhost:5173/`
-
-## Main menus
-All menu links are visible from the beginning.
-
-SME: Registration, Login, Dashboard, Digital Readiness, Digital Barriers, Business Performance, Recommendations, History, Inventory, Sales, Profile.
-
-Admin: Admin Registration, Admin Login, Admin Dashboard, SME Users, Assessment Results.
-
-Protected pages redirect to the correct login page until the user logs in.
-
-## Business types
-Retail, Manufacturing, Services, Agriculture.
-
-## Scoring
-1.00–2.60 = Low, 2.61–3.40 = Moderate, 3.41–5.00 = High.
-For barriers, a higher score means a more serious barrier.
-
-## Important
-The frontend API base URL is defined in one place only:
-`frontend/src/api/api.js`
-
-It is already set to:
-`http://localhost/SME_Digi_Final/backend/api`
-=======
-# SME_Digi_Final
-An empirical study on the challengers faced by SMEs in Sri Lanka in adopting digital technologies and their impact on business performance
->>>>>>> 066da1721aefbd3c85baac208662c2f1f793ebf2
+```bash
+npm install
