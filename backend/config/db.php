@@ -1,12 +1,13 @@
 <?php
 $host = 'localhost';
+$port = '3311';
 $dbname = 'sme_digi_final';
 $user = 'root';
 $pass = '';
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
         $user,
         $pass,
         [

@@ -551,6 +551,20 @@ export default function App() {
   }
 />
 
+<Route
+  path="/readiness"
+  element={
+    <SMEGuard
+      sme={sme}
+      admin={admin}
+      onLogout={logout}
+    >
+      <AssessmentPage type="Readiness" />
+    </SMEGuard>
+  }
+/>
+
+
             <Route
               path="/barriers"
               element={
