@@ -78,31 +78,6 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <div className="role-card admin-role-card">
-              <div className="role-icon">🛡️</div>
-
-              <h2>Administrator</h2>
-
-              <p>
-                Monitor registered SMEs and review assessment results
-                through the administration portal.
-              </p>
-
-              <button
-                className="role-button admin-login-button"
-                onClick={() => navigate("/admin/login")}
-              >
-                Admin Login
-              </button>
-
-              <button
-                className="role-button admin-register-button"
-                onClick={() => navigate("/admin/register")}
-              >
-                Admin Registration
-              </button>
-            </div>
-
           </div>
 
           <div className="landing-bottom-text">

@@ -1590,11 +1590,15 @@
 }
 
 .role-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.role-cards .sme-role-card {
+  width: 100%;
+  max-width: 360px;
+}
 .role-card {
   min-height: 365px;
   padding: 35px 27px;

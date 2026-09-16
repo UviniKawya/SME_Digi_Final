@@ -13,7 +13,6 @@ import {
 import {
   SMERegister,
   SMELogin,
-  AdminRegister,
   AdminLogin
 } from './components/AuthPages.jsx';
 
@@ -158,7 +157,7 @@ function Sidebar({ sme, admin, onLogout }) {
 
           <NavLink
             className="nav-link"
-            to="/admin"
+            to="/admin-dashboard"
           >
             Admin Dashboard
           </NavLink>
@@ -238,9 +237,9 @@ function AccessRestricted({
   const logoutAndContinue = async () => {
 
     await onLogout(
-      isAdminBlocked
-        ? '/admin/login'
-        : '/login'
+     isAdminBlocked
+  ? '/admin-login'
+  : '/login'
     );
 
   };
@@ -279,9 +278,9 @@ function AccessRestricted({
             className="access-back"
             onClick={() =>
               navigate(
-                isAdminBlocked
-                  ? '/'
-                  : '/admin'
+               isAdminBlocked
+  ? '/'
+  : '/admin-dashboard'
               )
             }
           >
@@ -387,22 +386,21 @@ function AdminGuard({
   /* Nobody logged in */
 
   return (
-    <Navigate
-      to="/admin/login"
-      replace
-    />
+   <Navigate
+  to="/admin-login"
+  replace
+/>
   );
 }
 function AppLayout({ sme, admin, onLogout, children }) {
   const location = useLocation();
 
-  const publicPages = [
-    '/',
-    '/login',
-    '/register',
-    '/admin/login',
-    '/admin/register'
-  ];
+ const publicPages = [
+  '/',
+  '/login',
+  '/register',
+  '/admin-login'
+];
 
   const hideSidebar = publicPages.includes(
     location.pathname
@@ -672,24 +670,7 @@ export default function App() {
             ========================== */}
 
             <Route
-              path="/admin/register"
-              element={
-                sme
-                  ? (
-                    <AccessRestricted
-                      type="admin"
-                      onLogout={logout}
-                    />
-                  )
-                  : (
-                    <AdminRegister />
-                  )
-              }
-            />
-
-
-            <Route
-              path="/admin/login"
+path="/admin-login"
               element={
                 sme
                   ? (
@@ -720,8 +701,8 @@ export default function App() {
                 ADMIN PROTECTED PAGES
             ========================== */}
 
-            <Route
-              path="/admin"
+           <Route
+path="/admin-dashboard"
               element={
                 <AdminGuard
                   admin={admin}
