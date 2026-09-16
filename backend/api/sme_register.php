@@ -75,9 +75,11 @@ $st = $pdo->prepare(
         business_type,
         location,
         employees,
-        years_operation
+        years_operation,
+        status,
+        approval_status
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, "Active", "Pending")'
 );
 
 $st->execute([
@@ -92,5 +94,7 @@ $st->execute([
 ]);
 
 echo json_encode([
-    'success' => true
+    'success' => true,
+    'status' => 'Pending',
+    'message' => 'Registration submitted. Your account is pending administrator approval.'
 ]);

@@ -171,6 +171,24 @@ export const api = {
   adminSmes: () =>
     request("admin_smes.php"),
 
+  adminApproveSme: (id) =>
+    request("admin_smes.php", {
+      method: "POST",
+      body: JSON.stringify({ action: "approve", id })
+    }),
+
+  adminRejectSme: (id) =>
+    request("admin_smes.php", {
+      method: "POST",
+      body: JSON.stringify({ action: "reject", id })
+    }),
+
+  adminUpdateSme: (d) =>
+    request("admin_smes.php", {
+      method: "POST",
+      body: JSON.stringify({ action: "update", ...d })
+    }),
+
   adminResults: (smeId) =>
     request(
       `admin_results.php${

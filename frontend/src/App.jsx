@@ -166,7 +166,7 @@ function Sidebar({ sme, admin, onLogout }) {
             className="nav-link"
             to="/admin/smes"
           >
-            SME Users
+            SME Management
           </NavLink>
 
           <NavLink
@@ -237,9 +237,9 @@ function AccessRestricted({
   const logoutAndContinue = async () => {
 
     await onLogout(
-     isAdminBlocked
-  ? '/admin-login'
-  : '/login'
+      isAdminBlocked
+        ? '/admin-login'
+        : '/login'
     );
 
   };
@@ -278,9 +278,9 @@ function AccessRestricted({
             className="access-back"
             onClick={() =>
               navigate(
-               isAdminBlocked
-  ? '/'
-  : '/admin-dashboard'
+                isAdminBlocked
+                  ? '/'
+                  : '/admin-dashboard'
               )
             }
           >
@@ -386,21 +386,21 @@ function AdminGuard({
   /* Nobody logged in */
 
   return (
-   <Navigate
-  to="/admin-login"
-  replace
-/>
+    <Navigate
+      to="/admin-login"
+      replace
+    />
   );
 }
 function AppLayout({ sme, admin, onLogout, children }) {
   const location = useLocation();
 
- const publicPages = [
-  '/',
-  '/login',
-  '/register',
-  '/admin-login'
-];
+  const publicPages = [
+    '/',
+    '/login',
+    '/register',
+    '/admin-login'
+  ];
 
   const hideSidebar = publicPages.includes(
     location.pathname
@@ -454,9 +454,9 @@ export default function App() {
      LOGOUT
   ===================================== */
 
- const logout = async (
-  redirectTo = '/'
-) => {
+  const logout = async (
+    redirectTo = '/'
+  ) => {
 
     try {
       await api.logout();
@@ -487,266 +487,268 @@ export default function App() {
 
     <BrowserRouter>
 
-  <AppLayout
-  sme={sme}
-  admin={admin}
-  onLogout={() => logout('/')}
->
+      <AppLayout
+        sme={sme}
+        admin={admin}
+        onLogout={() =>
+          logout(admin ? '/admin-login' : '/')
+        }
+      >
 
-    <Routes>
-<Route
-  path="/"
-  element={<LandingPage />}
-/>
+        <Routes>
+          <Route
+            path="/"
+            element={<LandingPage />}
+          />
 
-            {/* ==========================
+          {/* ==========================
                 PUBLIC SME PAGES
             ========================== */}
 
-            <Route
-              path="/register"
-              element={
-                <SMERegister />
-              }
-            />
+          <Route
+            path="/register"
+            element={
+              <SMERegister />
+            }
+          />
 
 
-            <Route
-              path="/login"
-              element={
-                <SMELogin
-                  onLogin={(x) => {
+          <Route
+            path="/login"
+            element={
+              <SMELogin
+                onLogin={(x) => {
 
-                    localStorage.removeItem(
-                      'adminUser'
-                    );
+                  localStorage.removeItem(
+                    'adminUser'
+                  );
 
-                    setSme(x);
-                    setAdmin(null);
+                  setSme(x);
+                  setAdmin(null);
 
-                  }}
-                />
-              }
-            />
+                }}
+              />
+            }
+          />
 
 
-            {/* ==========================
+          {/* ==========================
                 SME PROTECTED PAGES
             ========================== */}
 
-            
-
-<Route
-  path="/dashboard"
-  element={
-    <SMEGuard
-      sme={sme}
-      admin={admin}
-      onLogout={logout}
-    >
-      <Dashboard />
-    </SMEGuard>
-  }
-/>
-
-<Route
-  path="/readiness"
-  element={
-    <SMEGuard
-      sme={sme}
-      admin={admin}
-      onLogout={logout}
-    >
-      <AssessmentPage type="Readiness" />
-    </SMEGuard>
-  }
-/>
 
 
-            <Route
-              path="/barriers"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <AssessmentPage
-                    type="Barrier"
-                  />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/dashboard"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <Dashboard />
+              </SMEGuard>
+            }
+          />
+
+          <Route
+            path="/readiness"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <AssessmentPage type="Readiness" />
+              </SMEGuard>
+            }
+          />
 
 
-            <Route
-              path="/performance"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <AssessmentPage
-                    type="Performance"
-                  />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/barriers"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <AssessmentPage
+                  type="Barrier"
+                />
+              </SMEGuard>
+            }
+          />
 
 
-            <Route
-              path="/recommendations"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <Recommendations />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/performance"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <AssessmentPage
+                  type="Performance"
+                />
+              </SMEGuard>
+            }
+          />
 
 
-            <Route
-              path="/history"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <History />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/recommendations"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <Recommendations />
+              </SMEGuard>
+            }
+          />
 
 
-            <Route
-              path="/inventory"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <Inventory />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/history"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <History />
+              </SMEGuard>
+            }
+          />
 
 
-            <Route
-              path="/sales"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <Sales />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/inventory"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <Inventory />
+              </SMEGuard>
+            }
+          />
 
 
-            <Route
-              path="/profile"
-              element={
-                <SMEGuard
-                  sme={sme}
-                  admin={admin}
-                  onLogout={logout}
-                >
-                  <Profile />
-                </SMEGuard>
-              }
-            />
+          <Route
+            path="/sales"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <Sales />
+              </SMEGuard>
+            }
+          />
 
 
-            {/* ==========================
+          <Route
+            path="/profile"
+            element={
+              <SMEGuard
+                sme={sme}
+                admin={admin}
+                onLogout={logout}
+              >
+                <Profile />
+              </SMEGuard>
+            }
+          />
+
+
+          {/* ==========================
                 PUBLIC ADMIN PAGES
             ========================== */}
 
-            <Route
-path="/admin-login"
-              element={
-                sme
-                  ? (
-                    <AccessRestricted
-                      type="admin"
-                      onLogout={logout}
-                    />
-                  )
-                  : (
-                    <AdminLogin
-                      onLogin={(x) => {
+          <Route
+            path="/admin-login"
+            element={
+              sme
+                ? (
+                  <AccessRestricted
+                    type="admin"
+                    onLogout={logout}
+                  />
+                )
+                : (
+                  <AdminLogin
+                    onLogin={(x) => {
 
-                        localStorage.removeItem(
-                          'activeSme'
-                        );
+                      localStorage.removeItem(
+                        'activeSme'
+                      );
 
-                        setAdmin(x);
-                        setSme(null);
+                      setAdmin(x);
+                      setSme(null);
 
-                      }}
-                    />
-                  )
-              }
-            />
+                    }}
+                  />
+                )
+            }
+          />
 
 
-            {/* ==========================
+          {/* ==========================
                 ADMIN PROTECTED PAGES
             ========================== */}
 
-           <Route
-path="/admin-dashboard"
-              element={
-                <AdminGuard
-                  admin={admin}
-                  sme={sme}
-                  onLogout={logout}
-                >
-                  <AdminDashboard />
-                </AdminGuard>
-              }
-            />
+          <Route
+            path="/admin-dashboard"
+            element={
+              <AdminGuard
+                admin={admin}
+                sme={sme}
+                onLogout={logout}
+              >
+                <AdminDashboard />
+              </AdminGuard>
+            }
+          />
 
 
-            <Route
-              path="/admin/smes"
-              element={
-                <AdminGuard
-                  admin={admin}
-                  sme={sme}
-                  onLogout={logout}
-                >
-                  <SMEUsers />
-                </AdminGuard>
-              }
-            />
+          <Route
+            path="/admin/smes"
+            element={
+              <AdminGuard
+                admin={admin}
+                sme={sme}
+                onLogout={logout}
+              >
+                <SMEUsers />
+              </AdminGuard>
+            }
+          />
 
 
-            <Route
-              path="/admin/results"
-              element={
-                <AdminGuard
-                  admin={admin}
-                  sme={sme}
-                  onLogout={logout}
-                >
-                  <AdminResults />
-                </AdminGuard>
-              }
-            />
+          <Route
+            path="/admin/results"
+            element={
+              <AdminGuard
+                admin={admin}
+                sme={sme}
+                onLogout={logout}
+              >
+                <AdminResults />
+              </AdminGuard>
+            }
+          />
 
 
-              </Routes>
+        </Routes>
 
-  </AppLayout>
+      </AppLayout>
 
-</BrowserRouter>
-);
+    </BrowserRouter>
+  );
 }

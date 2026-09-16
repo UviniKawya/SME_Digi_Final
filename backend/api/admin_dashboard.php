@@ -15,6 +15,18 @@ $totalSmes = (int)$pdo
     ->query('SELECT COUNT(*) FROM smes')
     ->fetchColumn();
 
+$pendingSmes = (int)$pdo
+    ->query('SELECT COUNT(*) FROM smes WHERE approval_status="Pending"')
+    ->fetchColumn();
+
+$approvedSmes = (int)$pdo
+    ->query('SELECT COUNT(*) FROM smes WHERE approval_status="Approved"')
+    ->fetchColumn();
+
+$rejectedSmes = (int)$pdo
+    ->query('SELECT COUNT(*) FROM smes WHERE approval_status="Rejected"')
+    ->fetchColumn();
+
 $activeSmes = (int)$pdo
     ->query('SELECT COUNT(*) FROM smes WHERE status="Active"')
     ->fetchColumn();
@@ -194,6 +206,12 @@ $totalSalesRecords = (int)$pdo
 echo json_encode([
 
     'total_smes' => $totalSmes,
+
+    'pending_smes' => $pendingSmes,
+
+    'approved_smes' => $approvedSmes,
+
+    'rejected_smes' => $rejectedSmes,
 
     'active_smes' => $activeSmes,
 

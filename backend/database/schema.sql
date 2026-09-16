@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS smes (
   location ENUM('Urban','Rural') NOT NULL,
   employees INT NOT NULL,
   years_operation INT NOT NULL,
-  status ENUM('Active','Inactive') DEFAULT 'Active',
+  status ENUM('Active','Inactive') NOT NULL DEFAULT 'Active',
+  approval_status ENUM('Pending','Approved','Rejected') NOT NULL DEFAULT 'Pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

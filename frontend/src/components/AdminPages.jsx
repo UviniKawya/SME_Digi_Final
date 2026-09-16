@@ -240,74 +240,37 @@ export function AdminDashboard() {
 
       <div className="admin-kpi-grid">
 
-
         <div className="admin-kpi admin-purple">
-
           <span>Total SMEs</span>
-
-          <strong>
-            {data.total_smes}
-          </strong>
-
-          <small>
-            {data.active_smes} active SMEs
-          </small>
-
+          <strong>{data.total_smes}</strong>
+          <small>Registered SMEs</small>
         </div>
-
 
         <div className="admin-kpi admin-green">
-
           <span>Total Assessments</span>
-
-          <strong>
-            {data.total_assessments}
-          </strong>
-
-          <small>
-            Across all SMEs
-          </small>
-
+          <strong>{data.total_assessments}</strong>
+          <small>Across all SMEs</small>
         </div>
-
 
         <div className="admin-kpi admin-orange">
-
-          <span>Average Readiness</span>
-
-          <strong>
-            {Number(
-              data.average_scores?.Readiness || 0
-            ).toFixed(2)}
-          </strong>
-
-          <small>
-            Out of 5
-          </small>
-
+          <span>Pending Approvals</span>
+          <strong>{data.pending_smes || 0}</strong>
+          <small>Waiting for review</small>
         </div>
 
+        <div className="admin-kpi admin-green">
+          <span>Approved SMEs</span>
+          <strong>{data.approved_smes || 0}</strong>
+          <small>Approved accounts</small>
+        </div>
 
         <div className="admin-kpi admin-pink">
-
-          <span>Total Sales</span>
-
-          <strong>
-            Rs. {Number(
-              data.sales?.total_sales || 0
-            ).toLocaleString()}
-          </strong>
-
-          <small>
-            {data.sales?.sales_records || 0}
-            {' '}sales records
-          </small>
-
+          <span>Rejected SMEs</span>
+          <strong>{data.rejected_smes || 0}</strong>
+          <small>Rejected registrations</small>
         </div>
 
-
       </div>
-
 
       {/* CHART ROW ONE */}
 
@@ -738,37 +701,250 @@ export function AdminDashboard() {
 
 
 /* =====================================================
-   SME USERS
+   SME MANAGEMENT
 ===================================================== */
 
 export function SMEUsers() {
 
   const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState('All');
+  const [selected, setSelected] = useState(null);
+  const [editing, setEditing] = useState(null);
+  const [message, setMessage] = useState('');
+
+  const API_URL =
+    'http://localhost/SME_Digi_Final/backend/api/admin_smes.php';
+
+
+  const load = async () => {
+
+    try {
+
+      const result = await api.adminSmes();
+
+      setUsers(result);
+
+    } catch (err) {
+
+      setMessage(err.message);
+
+    }
+  };
+
 
   useEffect(() => {
-
-    const load = async () => {
-
-      try {
-
-        const result =
-          await api.adminSmes();
-
-        setUsers(result);
-
-      } catch {}
-    };
 
     load();
 
   }, []);
 
 
+  /* =========================
+     APPROVE / REJECT
+  ========================= */
+
+  const changeStatus = async (id, action) => {
+
+    try {
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+
+        credentials: 'include',
+
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          id,
+          action
+        })
+      });
+
+
+      const result = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          result.error || 'Unable to update SME'
+        );
+      }
+
+
+      setMessage(result.message);
+
+      await load();
+
+    } catch (err) {
+
+      setMessage(err.message);
+
+    }
+  };
+
+
+  /* =========================
+     SAVE EDIT
+  ========================= */
+
+  const saveEdit = async () => {
+
+    try {
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+
+        credentials: 'include',
+
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          ...editing,
+          action: 'update'
+        })
+      });
+
+
+      const result = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          result.error || 'Unable to update SME'
+        );
+      }
+
+
+      setMessage(result.message);
+
+      setEditing(null);
+
+      await load();
+
+    } catch (err) {
+
+      setMessage(err.message);
+
+    }
+  };
+
+
+  /* =========================
+     FILTER
+  ========================= */
+
+  const filteredUsers =
+    filter === 'All'
+      ? users
+      : users.filter(
+        row => row.approval_status === filter
+      );
+
+
+  const count = status =>
+    users.filter(
+      row => row.approval_status === status
+    ).length;
+
+
   return (
 
     <div className="page">
 
-      <h1>SME Users</h1>
+      <h1>SME Management</h1>
+
+      <p className="muted">
+        Review and manage registered SME accounts
+      </p>
+
+      {/* SME SUMMARY CARDS */}
+
+      <div className="sme-summary-grid">
+
+        <div className="sme-summary-card sme-summary-all">
+          <div className="sme-summary-icon">●</div>
+          <div>
+            <span>All SMEs</span>
+            <strong>{users.length}</strong>
+            <small>Total registered SMEs</small>
+          </div>
+        </div>
+
+        <div className="sme-summary-card sme-summary-pending">
+          <div className="sme-summary-icon">◷</div>
+          <div>
+            <span>Pending</span>
+            <strong>{count('Pending')}</strong>
+            <small>Waiting for approval</small>
+          </div>
+        </div>
+
+        <div className="sme-summary-card sme-summary-approved">
+          <div className="sme-summary-icon">✓</div>
+          <div>
+            <span>Approved</span>
+            <strong>{count('Approved')}</strong>
+            <small>Approved SME accounts</small>
+          </div>
+        </div>
+
+        <div className="sme-summary-card sme-summary-rejected">
+          <div className="sme-summary-icon">×</div>
+          <div>
+            <span>Rejected</span>
+            <strong>{count('Rejected')}</strong>
+            <small>Rejected registrations</small>
+          </div>
+        </div>
+
+      </div>
+      {message && (
+        <p className="success">
+          {message}
+        </p>
+      )}
+
+
+      {/* FILTER BUTTONS */}
+
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          marginBottom: '20px',
+          flexWrap: 'wrap'
+        }}
+      >
+
+        {[
+          ['All', users.length],
+          ['Pending', count('Pending')],
+          ['Approved', count('Approved')],
+          ['Rejected', count('Rejected')]
+        ].map(([name, total]) => (
+
+          <button
+            key={name}
+            className={
+              filter === name
+                ? 'primary'
+                : 'secondary'
+            }
+            onClick={() => setFilter(name)}
+          >
+            {name} ({total})
+          </button>
+
+        ))}
+
+      </div>
+
+
+      {/* SME TABLE */}
 
       <div className="card">
 
@@ -777,11 +953,14 @@ export function SMEUsers() {
           <thead>
 
             <tr>
+
               <th>SME</th>
               <th>Owner</th>
               <th>Industry</th>
               <th>Location</th>
               <th>Status</th>
+              <th>Actions</th>
+
             </tr>
 
           </thead>
@@ -789,19 +968,102 @@ export function SMEUsers() {
 
           <tbody>
 
-            {users.map(row => (
+            {filteredUsers.map(row => (
 
               <tr key={row.id}>
 
-                <td>{row.sme_name}</td>
+                <td>
+                  {row.sme_name}
+                </td>
 
-                <td>{row.owner_name}</td>
+                <td>
+                  {row.owner_name}
+                </td>
 
-                <td>{row.business_type}</td>
+                <td>
+                  {row.business_type}
+                </td>
 
-                <td>{row.location}</td>
+                <td>
+                  {row.location}
+                </td>
 
-                <td>{row.status}</td>
+                <td>
+                  <span
+                    className={`approval-badge approval-${row.approval_status?.toLowerCase()}`}
+                  >
+                    {row.approval_status}
+                  </span>
+                </td>
+
+                <td>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '6px',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+
+                    <button
+                      className="secondary"
+                      onClick={() =>
+                        setSelected(row)
+                      }
+                    >
+                      View
+                    </button>
+
+
+                    <button
+                      className="secondary"
+                      onClick={() =>
+                        setEditing({ ...row })
+                      }
+                    >
+                      Edit
+                    </button>
+
+
+                    {row.approval_status !==
+                      'Approved' && (
+
+                        <button
+                          className="primary"
+                          onClick={() =>
+                            changeStatus(
+                              row.id,
+                              'approve'
+                            )
+                          }
+                        >
+                          Approve
+                        </button>
+
+                      )}
+
+
+                    {row.approval_status !==
+                      'Rejected' && (
+
+                        <button
+                          className="danger"
+                          onClick={() =>
+                            changeStatus(
+                              row.id,
+                              'reject'
+                            )
+                          }
+                        >
+                          Reject
+                        </button>
+
+                      )}
+
+                  </div>
+
+                </td>
 
               </tr>
 
@@ -813,10 +1075,273 @@ export function SMEUsers() {
 
       </div>
 
+
+      {/* VIEW SME */}
+
+      {selected && (
+
+        <div className="card">
+
+          <h2>SME Details</h2>
+
+          <p>
+            <strong>Business Name:</strong>{' '}
+            {selected.sme_name}
+          </p>
+
+          <p>
+            <strong>Owner:</strong>{' '}
+            {selected.owner_name}
+          </p>
+
+          <p>
+            <strong>Email:</strong>{' '}
+            {selected.email}
+          </p>
+
+          <p>
+            <strong>Business Type:</strong>{' '}
+            {selected.business_type}
+          </p>
+
+          <p>
+            <strong>Location:</strong>{' '}
+            {selected.location}
+          </p>
+
+          <p>
+            <strong>Employees:</strong>{' '}
+            {selected.employees}
+          </p>
+
+          <p>
+            <strong>Years in Operation:</strong>{' '}
+            {selected.years_operation}
+          </p>
+
+          <p>
+            <strong>Approval Status:</strong>{' '}
+            {selected.approval_status}
+          </p>
+
+
+          <button
+            className="secondary"
+            onClick={() =>
+              setSelected(null)
+            }
+          >
+            Close
+          </button>
+
+        </div>
+
+      )}
+
+
+      {/* EDIT SME */}
+
+      {editing && (
+
+        <div className="card">
+
+          <h2>Edit SME</h2>
+
+
+          <label className="field">
+
+            <span>Business Name</span>
+
+            <input
+              value={editing.sme_name}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  sme_name: e.target.value
+                })
+              }
+            />
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Owner Name</span>
+
+            <input
+              value={editing.owner_name}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  owner_name: e.target.value
+                })
+              }
+            />
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Email</span>
+
+            <input
+              type="email"
+              value={editing.email}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  email: e.target.value
+                })
+              }
+            />
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Business Type</span>
+
+            <select
+              value={editing.business_type}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  business_type:
+                    e.target.value
+                })
+              }
+            >
+
+              <option>Retail</option>
+              <option>Manufacturing</option>
+              <option>Services</option>
+              <option>Agriculture</option>
+              <option>Industry</option>
+
+            </select>
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Location</span>
+
+            <select
+              value={editing.location}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  location: e.target.value
+                })
+              }
+            >
+
+              <option>Urban</option>
+              <option>Rural</option>
+
+            </select>
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Employees</span>
+
+            <input
+              type="number"
+              value={editing.employees}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  employees: e.target.value
+                })
+              }
+            />
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Years in Operation</span>
+
+            <input
+              type="number"
+              value={editing.years_operation}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  years_operation:
+                    e.target.value
+                })
+              }
+            />
+
+          </label>
+
+
+          <label className="field">
+
+            <span>Approval Status</span>
+
+            <select
+              value={editing.approval_status}
+              onChange={e =>
+                setEditing({
+                  ...editing,
+                  approval_status:
+                    e.target.value
+                })
+              }
+            >
+
+              <option>Pending</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+
+            </select>
+
+          </label>
+
+
+          <div
+            style={{
+              display: 'flex',
+              gap: '10px'
+            }}
+          >
+
+            <button
+              className="primary"
+              onClick={saveEdit}
+            >
+              Save Changes
+            </button>
+
+
+            <button
+              className="secondary"
+              onClick={() =>
+                setEditing(null)
+              }
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
     </div>
   );
 }
-
 
 /* =====================================================
    ADMIN ASSESSMENT RESULTS
@@ -838,7 +1363,7 @@ export function AdminResults() {
 
         setResults(result);
 
-      } catch {}
+      } catch { }
     };
 
     load();
