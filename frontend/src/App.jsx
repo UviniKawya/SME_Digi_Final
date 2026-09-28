@@ -27,7 +27,8 @@ import Profile from './components/Profile.jsx';
 import {
   AdminDashboard,
   SMEUsers,
-  AdminResults
+  AdminResults,
+  AdminReports
 } from './components/AdminPages.jsx';
 
 import { api } from './api/api.js';
@@ -175,6 +176,14 @@ function Sidebar({ sme, admin, onLogout }) {
           >
             Assessment Results
           </NavLink>
+
+          <NavLink
+            className="nav-link"
+            to="/admin/reports"
+          >
+            Reports
+          </NavLink>
+
         </>
       )}
 
@@ -743,7 +752,18 @@ export default function App() {
               </AdminGuard>
             }
           />
-
+          <Route
+            path="/admin/reports"
+            element={
+              <AdminGuard
+                admin={admin}
+                sme={sme}
+                onLogout={logout}
+              >
+                <AdminReports />
+              </AdminGuard>
+            }
+          />
 
         </Routes>
 

@@ -1075,64 +1075,94 @@ export function SMEUsers() {
 
       </div>
 
-
       {/* VIEW SME */}
 
       {selected && (
 
-        <div className="card">
+        <div className="sme-modal-overlay">
 
-          <h2>SME Details</h2>
+          <div className="sme-modal sme-view-modal">
 
-          <p>
-            <strong>Business Name:</strong>{' '}
-            {selected.sme_name}
-          </p>
+            <div className="sme-modal-header">
 
-          <p>
-            <strong>Owner:</strong>{' '}
-            {selected.owner_name}
-          </p>
+              <div>
+                <h2>SME Details</h2>
+                <p>Registered SME account information</p>
+              </div>
 
-          <p>
-            <strong>Email:</strong>{' '}
-            {selected.email}
-          </p>
+              <button
+                className="sme-modal-close"
+                onClick={() => setSelected(null)}
+                type="button"
+              >
+                ×
+              </button>
 
-          <p>
-            <strong>Business Type:</strong>{' '}
-            {selected.business_type}
-          </p>
-
-          <p>
-            <strong>Location:</strong>{' '}
-            {selected.location}
-          </p>
-
-          <p>
-            <strong>Employees:</strong>{' '}
-            {selected.employees}
-          </p>
-
-          <p>
-            <strong>Years in Operation:</strong>{' '}
-            {selected.years_operation}
-          </p>
-
-          <p>
-            <strong>Approval Status:</strong>{' '}
-            {selected.approval_status}
-          </p>
+            </div>
 
 
-          <button
-            className="secondary"
-            onClick={() =>
-              setSelected(null)
-            }
-          >
-            Close
-          </button>
+            <div className="sme-view-grid">
+
+              <div className="sme-detail-item">
+                <span>Business Name</span>
+                <strong>{selected.sme_name}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Owner Name</span>
+                <strong>{selected.owner_name}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Email</span>
+                <strong>{selected.email}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Business Type</span>
+                <strong>{selected.business_type}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Location</span>
+                <strong>{selected.location}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Employees</span>
+                <strong>{selected.employees}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Years in Operation</span>
+                <strong>{selected.years_operation}</strong>
+              </div>
+
+              <div className="sme-detail-item">
+                <span>Approval Status</span>
+
+                <span
+                  className={`approval-badge approval-${selected.approval_status?.toLowerCase()}`}
+                >
+                  {selected.approval_status}
+                </span>
+              </div>
+
+            </div>
+
+
+            <div className="sme-view-actions">
+
+              <button
+                className="secondary"
+                onClick={() => setSelected(null)}
+              >
+                Close
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -1143,195 +1173,215 @@ export function SMEUsers() {
 
       {editing && (
 
-        <div className="card">
+        <div className="sme-modal-overlay">
 
-          <h2>Edit SME</h2>
+          <div className="sme-modal sme-edit-modal">
 
+            <div className="sme-modal-header">
+              <div>
+                <h2>Edit SME Information</h2>
+                <p>Update the registered SME account details</p>
+              </div>
 
-          <label className="field">
+              <button
+                className="sme-modal-close"
+                onClick={() => setEditing(null)}
+                type="button"
+              >
+                ×
+              </button>
+            </div>
 
-            <span>Business Name</span>
+            <div className="sme-edit-grid">
 
-            <input
-              value={editing.sme_name}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  sme_name: e.target.value
-                })
-              }
-            />
+              <label className="field">
 
-          </label>
+                <span>Business Name</span>
 
+                <input
+                  value={editing.sme_name}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      sme_name: e.target.value
+                    })
+                  }
+                />
 
-          <label className="field">
-
-            <span>Owner Name</span>
-
-            <input
-              value={editing.owner_name}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  owner_name: e.target.value
-                })
-              }
-            />
-
-          </label>
-
-
-          <label className="field">
-
-            <span>Email</span>
-
-            <input
-              type="email"
-              value={editing.email}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  email: e.target.value
-                })
-              }
-            />
-
-          </label>
+              </label>
 
 
-          <label className="field">
+              <label className="field">
 
-            <span>Business Type</span>
+                <span>Owner Name</span>
 
-            <select
-              value={editing.business_type}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  business_type:
-                    e.target.value
-                })
-              }
-            >
+                <input
+                  value={editing.owner_name}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      owner_name: e.target.value
+                    })
+                  }
+                />
 
-              <option>Retail</option>
-              <option>Manufacturing</option>
-              <option>Services</option>
-              <option>Agriculture</option>
-              <option>Industry</option>
-
-            </select>
-
-          </label>
+              </label>
 
 
-          <label className="field">
+              <label className="field">
 
-            <span>Location</span>
+                <span>Email</span>
 
-            <select
-              value={editing.location}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  location: e.target.value
-                })
-              }
-            >
+                <input
+                  type="email"
+                  value={editing.email}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      email: e.target.value
+                    })
+                  }
+                />
 
-              <option>Urban</option>
-              <option>Rural</option>
-
-            </select>
-
-          </label>
+              </label>
 
 
-          <label className="field">
+              <label className="field">
 
-            <span>Employees</span>
+                <span>Business Type</span>
 
-            <input
-              type="number"
-              value={editing.employees}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  employees: e.target.value
-                })
-              }
-            />
+                <select
+                  value={editing.business_type}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      business_type:
+                        e.target.value
+                    })
+                  }
+                >
 
-          </label>
+                  <option>Retail</option>
+                  <option>Manufacturing</option>
+                  <option>Services</option>
+                  <option>Agriculture</option>
+                  <option>Industry</option>
 
+                </select>
 
-          <label className="field">
-
-            <span>Years in Operation</span>
-
-            <input
-              type="number"
-              value={editing.years_operation}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  years_operation:
-                    e.target.value
-                })
-              }
-            />
-
-          </label>
+              </label>
 
 
-          <label className="field">
+              <label className="field">
 
-            <span>Approval Status</span>
+                <span>Location</span>
 
-            <select
-              value={editing.approval_status}
-              onChange={e =>
-                setEditing({
-                  ...editing,
-                  approval_status:
-                    e.target.value
-                })
-              }
-            >
+                <select
+                  value={editing.location}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      location: e.target.value
+                    })
+                  }
+                >
 
-              <option>Pending</option>
-              <option>Approved</option>
-              <option>Rejected</option>
+                  <option>Urban</option>
+                  <option>Rural</option>
 
-            </select>
+                </select>
 
-          </label>
+              </label>
 
 
-          <div
-            style={{
-              display: 'flex',
-              gap: '10px'
-            }}
-          >
+              <label className="field">
 
-            <button
-              className="primary"
-              onClick={saveEdit}
-            >
-              Save Changes
-            </button>
+                <span>Employees</span>
+
+                <input
+                  type="number"
+                  value={editing.employees}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      employees: e.target.value
+                    })
+                  }
+                />
+
+              </label>
 
 
-            <button
-              className="secondary"
-              onClick={() =>
-                setEditing(null)
-              }
-            >
-              Cancel
-            </button>
+              <label className="field">
+
+                <span>Years in Operation</span>
+
+                <input
+                  type="number"
+                  value={editing.years_operation}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      years_operation:
+                        e.target.value
+                    })
+                  }
+                />
+
+              </label>
+
+
+              <label className="field">
+
+                <span>Approval Status</span>
+
+                <select
+                  value={editing.approval_status}
+                  onChange={e =>
+                    setEditing({
+                      ...editing,
+                      approval_status:
+                        e.target.value
+                    })
+                  }
+                >
+
+                  <option>Pending</option>
+                  <option>Approved</option>
+                  <option>Rejected</option>
+
+                </select>
+
+              </label>
+
+
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '10px'
+                }}
+              >
+
+                <button
+                  className="primary"
+                  onClick={saveEdit}
+                >
+                  Save Changes
+                </button>
+
+
+                <button
+                  className="secondary"
+                  onClick={() =>
+                    setEditing(null)
+                  }
+                >
+                  Cancel
+                </button>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -1342,7 +1392,6 @@ export function SMEUsers() {
     </div>
   );
 }
-
 /* =====================================================
    ADMIN ASSESSMENT RESULTS
 ===================================================== */
@@ -1434,6 +1483,251 @@ export function AdminResults() {
         </table>
 
       </div>
+
+    </div>
+  );
+}
+
+/* =====================================================
+   ADMIN REPORTS
+===================================================== */
+
+export function AdminReports() {
+
+  const [reportType, setReportType] = useState('sme');
+  const [data, setData] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const generateReport = async () => {
+
+    try {
+      setLoading(true);
+      setError('');
+
+      const result = await api.adminReports();
+
+      setData(result);
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  return (
+    <div className="page">
+
+      <h1>Reports</h1>
+
+      <p className="muted">
+        Generate and review SME Digi administrative reports
+      </p>
+
+
+      {/* REPORT SELECTION */}
+
+      <div className="card report-page-card report-controls">
+        <h2>Generate Report</h2>
+
+        <label className="field">
+
+          <span>Report Type</span>
+
+          <select
+            value={reportType}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              setData(null);
+            }}
+          >
+
+            <option value="sme">
+              SME Registration Report
+            </option>
+
+            <option value="assessment">
+              Assessment Summary Report
+            </option>
+
+          </select>
+
+        </label>
+
+
+        <button
+          className="primary"
+          onClick={generateReport}
+          disabled={loading}
+        >
+          {loading ? 'Generating...' : 'Generate Report'}
+        </button>
+
+        {error && (
+          <p className="error">
+            {error}
+          </p>
+        )}
+
+      </div>
+
+
+      {/* SME REGISTRATION REPORT */}
+
+      {data && reportType === 'sme' && (
+
+        <div className="card report-page-card">
+
+          <h2>SME Registration Report</h2>
+
+          <p className="muted">
+            Summary of registered SME accounts
+          </p>
+
+
+          <div className="report-summary">
+
+            <div>
+              <span>Total SMEs</span>
+              <strong>{data.sme_summary.total}</strong>
+            </div>
+
+            <div>
+              <span>Pending</span>
+              <strong>{data.sme_summary.pending}</strong>
+            </div>
+
+            <div>
+              <span>Approved</span>
+              <strong>{data.sme_summary.approved}</strong>
+            </div>
+
+            <div>
+              <span>Rejected</span>
+              <strong>{data.sme_summary.rejected}</strong>
+            </div>
+
+          </div>
+
+
+          <table className="report-table">
+            <thead>
+              <tr>
+                <th>SME</th>
+                <th>Owner</th>
+                <th>Industry</th>
+                <th>Location</th>
+                <th>Employees</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {data.smes.map((row) => (
+
+                <tr key={row.id}>
+
+                  <td>{row.sme_name}</td>
+
+                  <td>{row.owner_name}</td>
+
+                  <td>{row.business_type}</td>
+
+                  <td>{row.location}</td>
+
+                  <td>{row.employees}</td>
+
+                  <td>
+                    <span
+                      className={`approval-badge approval-${row.approval_status?.toLowerCase()}`}
+                    >
+                      {row.approval_status}
+                    </span>
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+
+          <button
+            className="secondary report-print-btn"
+            onClick={() => window.print()}
+            style={{ marginTop: '20px' }}
+          >
+            Print / Save as PDF
+          </button>
+
+        </div>
+
+      )}
+
+
+      {/* ASSESSMENT SUMMARY REPORT */}
+
+      {data && reportType === 'assessment' && (
+
+        <div className="card report-page-card">
+          <h2>Assessment Summary Report</h2>
+
+          <p className="muted">
+            Summary of assessments completed in SME Digi
+          </p>
+
+
+          <div className="report-summary">
+
+            <div>
+              <span>Total Assessments</span>
+              <strong>{data.total_assessments}</strong>
+            </div>
+
+          </div>
+
+
+          <table className="report-table">
+            <thead>
+              <tr>
+                <th>Assessment Type</th>
+                <th>Total Completed</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {data.assessment_summary.map(
+                (row, index) => (
+
+                  <tr key={index}>
+                    <td>{row.assessment_type}</td>
+                    <td>{row.total}</td>
+                  </tr>
+
+                )
+              )}
+
+            </tbody>
+
+          </table>
+
+
+          <button
+            className="secondary report-print-btn" onClick={() => window.print()}
+            style={{ marginTop: '20px' }}
+          >
+            Print / Save as PDF
+          </button>
+
+        </div>
+
+      )}
 
     </div>
   );

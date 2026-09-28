@@ -191,10 +191,12 @@ export const api = {
 
   adminResults: (smeId) =>
     request(
-      `admin_results.php${
-        smeId
-          ? `?sme_id=${smeId}`
-          : ""
+      `admin_results.php${smeId
+        ? `?sme_id=${smeId}`
+        : ""
       }`
-    )
+    ),
+
+  adminReports: () =>
+    request("admin_reports.php")
 };
