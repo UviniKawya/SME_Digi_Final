@@ -1732,3 +1732,278 @@ export function AdminReports() {
     </div>
   );
 }
+/* =====================================================
+   ADMIN ANNOUNCEMENTS
+===================================================== */
+
+export function AdminAnnouncements() {
+
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState('');
+
+  /* Form state */
+  const [title,   setTitle]   = useState('');
+  const [message, setMessage] = useState('');
+  const [saving,  setSaving]  = useState(false);
+  const [formErr, setFormErr] = useState('');
+
+  /* Editing state */
+  const [editing, setEditing] = useState(null); // null or announcement object
+
+
+  /* ----------------------------------------
+     LOAD
+  ---------------------------------------- */
+
+  const load = async () => {
+    try {
+      const data = await api.getAnnouncements();
+      setItems(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+
+  /* ----------------------------------------
+     CREATE
+  ---------------------------------------- */
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    setFormErr('');
+
+    if (!title.trim() || !message.trim()) {
+      setFormErr('Title and message are required.');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      await api.createAnnouncement({ title: title.trim(), message: message.trim() });
+      setTitle('');
+      setMessage('');
+      await load();
+    } catch (err) {
+      setFormErr(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+
+  /* ----------------------------------------
+     SAVE EDIT
+  ---------------------------------------- */
+
+  const handleSaveEdit = async () => {
+    setFormErr('');
+
+    if (!editing.title.trim() || !editing.message.trim()) {
+      setFormErr('Title and message are required.');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      await api.updateAnnouncement({
+        id:      editing.id,
+        title:   editing.title.trim(),
+        message: editing.message.trim()
+      });
+      setEditing(null);
+      await load();
+    } catch (err) {
+      setFormErr(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+
+  /* ----------------------------------------
+     DELETE
+  ---------------------------------------- */
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this announcement?')) return;
+    try {
+      await api.deleteAnnouncement(id);
+      await load();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+
+  /* ----------------------------------------
+     RENDER
+  ---------------------------------------- */
+
+  return (
+    <div className="page">
+
+      <h1>Announcements</h1>
+
+      <p className="muted">
+        Post announcements that are visible to all SME users.
+      </p>
+
+      {error && <p className="error">{error}</p>}
+
+
+      {/* CREATE FORM */}
+
+      <div className="card ann-form-card">
+
+        <h2>New Announcement</h2>
+
+        <form onSubmit={handleCreate}>
+
+          <label className="field">
+            <span>Title</span>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Announcement title"
+            />
+          </label>
+
+          <label className="field">
+            <span>Message</span>
+            <textarea
+              rows={4}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Announcement message..."
+            />
+          </label>
+
+          {formErr && <p className="error">{formErr}</p>}
+
+          <button
+            className="primary"
+            type="submit"
+            disabled={saving}
+          >
+            {saving ? 'Saving...' : 'Post Announcement'}
+          </button>
+
+        </form>
+
+      </div>
+
+
+      {/* ANNOUNCEMENT LIST */}
+
+      {items.length === 0 && !error && (
+        <p className="muted">No announcements yet.</p>
+      )}
+
+      {items.map((item) => (
+
+        <div className="ann-item" key={item.id}>
+
+          {editing && editing.id === item.id ? (
+
+            /* EDIT FORM INLINE */
+
+            <div className="ann-edit-form">
+
+              <label className="field">
+                <span>Title</span>
+                <input
+                  type="text"
+                  value={editing.title}
+                  onChange={(e) =>
+                    setEditing({ ...editing, title: e.target.value })
+                  }
+                />
+              </label>
+
+              <label className="field">
+                <span>Message</span>
+                <textarea
+                  rows={3}
+                  value={editing.message}
+                  onChange={(e) =>
+                    setEditing({ ...editing, message: e.target.value })
+                  }
+                />
+              </label>
+
+              {formErr && <p className="error">{formErr}</p>}
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+
+                <button
+                  className="primary"
+                  onClick={handleSaveEdit}
+                  disabled={saving}
+                >
+                  {saving ? 'Saving...' : 'Save'}
+                </button>
+
+                <button
+                  className="secondary"
+                  onClick={() => { setEditing(null); setFormErr(''); }}
+                >
+                  Cancel
+                </button>
+
+              </div>
+
+            </div>
+
+          ) : (
+
+            /* READ VIEW */
+
+            <>
+              <div className="ann-item-header">
+
+                <h3>{item.title}</h3>
+
+                <span className="muted ann-date">
+                  {new Date(item.created_at).toLocaleString()}
+                </span>
+
+              </div>
+
+              <p className="ann-message">{item.message}</p>
+
+              <div className="ann-actions">
+
+                <button
+                  className="secondary"
+                  onClick={() => {
+                    setEditing({ ...item });
+                    setFormErr('');
+                  }}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="danger"
+                  onClick={() => handleDelete(item.id)}
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </>
+
+          )}
+
+        </div>
+
+      ))}
+
+    </div>
+  );
+}

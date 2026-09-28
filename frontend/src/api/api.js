@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost/SME_Digi_Final/backend/api";
+﻿const BASE_URL = "http://localhost/SME_Digi_Final/backend/api";
 
 async function request(endpoint, options = {}) {
   const headers = {
@@ -198,5 +198,29 @@ export const api = {
     ),
 
   adminReports: () =>
-    request("admin_reports.php")
+    request("admin_reports.php"),
+
+
+  /* ANNOUNCEMENTS */
+
+  getAnnouncements: () =>
+    request("announcements.php"),
+
+  createAnnouncement: (d) =>
+    request("announcements.php", {
+      method: "POST",
+      body: JSON.stringify(d)
+    }),
+
+  updateAnnouncement: (d) =>
+    request("announcements.php", {
+      method: "PUT",
+      body: JSON.stringify(d)
+    }),
+
+  deleteAnnouncement: (id) =>
+    request(
+      `announcements.php?id=${id}`,
+      { method: "DELETE" }
+    )
 };

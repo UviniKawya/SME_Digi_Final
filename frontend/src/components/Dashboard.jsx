@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from 'react';
+﻿ import React, { useEffect, useState } from 'react';
 import { api } from '../api/api.js';
 
 import {
@@ -891,6 +891,53 @@ const salesChart = {
         </div>
 
       </div>
+
+
+      {/* ============================
+          LATEST ANNOUNCEMENTS
+      ============================ */}
+
+      {data.announcements && data.announcements.length > 0 && (
+
+        <div className="sme-dark-panel ann-dashboard-panel">
+
+          <div className="sme-panel-heading">
+
+            <div>
+              <h2>Latest Announcements</h2>
+              <p>Updates from the SME Digi team</p>
+            </div>
+
+          </div>
+
+
+          <div className="ann-dashboard-list">
+
+            {data.announcements.map((ann) => (
+
+              <div className="ann-dashboard-item" key={ann.id}>
+
+                <div className="ann-dashboard-item-header">
+
+                  <strong>{ann.title}</strong>
+
+                  <span className="sme-muted ann-dashboard-date">
+                    {new Date(ann.created_at).toLocaleString()}
+                  </span>
+
+                </div>
+
+                <p className="ann-dashboard-msg">{ann.message}</p>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );

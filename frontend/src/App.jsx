@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 
 import {
   BrowserRouter,
@@ -28,7 +28,8 @@ import {
   AdminDashboard,
   SMEUsers,
   AdminResults,
-  AdminReports
+  AdminReports,
+  AdminAnnouncements
 } from './components/AdminPages.jsx';
 
 import { api } from './api/api.js';
@@ -182,6 +183,13 @@ function Sidebar({ sme, admin, onLogout }) {
             to="/admin/reports"
           >
             Reports
+          </NavLink>
+
+          <NavLink
+            className="nav-link"
+            to="/admin/announcements"
+          >
+            Announcements
           </NavLink>
 
         </>
@@ -761,6 +769,19 @@ export default function App() {
                 onLogout={logout}
               >
                 <AdminReports />
+              </AdminGuard>
+            }
+          />
+
+          <Route
+            path="/admin/announcements"
+            element={
+              <AdminGuard
+                admin={admin}
+                sme={sme}
+                onLogout={logout}
+              >
+                <AdminAnnouncements />
               </AdminGuard>
             }
           />

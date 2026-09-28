@@ -2696,3 +2696,134 @@ td {
 .recommendation-item p {
   margin: 4px 0 0;
 }
+
+/* ===== Admin Announcements Page ===== */
+
+.ann-form-card {
+  margin-bottom: 24px;
+}
+
+.ann-form-card textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid #d1dae6;
+  border-radius: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+  color: #1e293b;
+}
+
+.ann-form-card textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+.ann-item {
+  background: #fff;
+  border: 1px solid #dbe5ef;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+
+.ann-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ann-item-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+.ann-date {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ann-message {
+  margin: 0 0 14px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.ann-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ann-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+button.danger {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+button.danger:hover {
+  background: #dc2626;
+}
+
+
+/* ===== SME Dashboard Announcements Panel ===== */
+
+.ann-dashboard-panel {
+  margin-top: 24px;
+}
+
+.ann-dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.ann-dashboard-item {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.ann-dashboard-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.ann-dashboard-item-header strong {
+  color: #f1f5f9;
+  font-size: 15px;
+}
+
+.ann-dashboard-date {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.ann-dashboard-msg {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.55;
+}
