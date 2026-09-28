@@ -2599,3 +2599,100 @@ td {
     width: 95%;
   }
 }
+
+/* ===== Recommendation Sessions ===== */
+
+.recommendation-session {
+  background: #fff;
+  border: 1px solid #dbe5ef;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 22px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recommendation-header {
+  background: #f1f7fd;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recommendation-header h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+}
+
+.latest-badge {
+  background: #20a64a;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.recommendation-score {
+  background: #edf6ff;
+  border: 1px solid #cbdfee;
+  border-radius: 10px;
+  padding: 9px 15px;
+  text-align: right;
+}
+
+.recommendation-item {
+  margin-top: 8px;
+  padding: 14px 18px;
+  border-radius: 10px;
+}
+
+.priority-high {
+  background: #fff0f0;
+}
+
+.priority-medium {
+  background: #fff8e7;
+}
+
+.priority-low {
+  background: #edf9f2;
+}
+
+.priority-label {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.priority-high .priority-label {
+  background: #ef5b5b;
+  color: white;
+}
+
+.priority-medium .priority-label {
+  background: #ffd66b;
+  color: #493700;
+}
+
+.priority-low .priority-label {
+  background: #bdeacb;
+  color: #12672b;
+}
+
+.recommendation-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.recommendation-item h3 {
+  margin: 5px 0;
+}
+
+.recommendation-item p {
+  margin: 4px 0 0;
+}
