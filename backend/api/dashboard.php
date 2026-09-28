@@ -264,6 +264,20 @@ foreach ($weeklySales as &$week) {
     $week['total'] = (float)$week['total'];
 }
 /* =====================================================
+   LATEST ANNOUNCEMENTS
+===================================================== */
+
+$announcementsQuery = $pdo->query(
+    'SELECT id, title, message, created_at
+     FROM announcements
+     ORDER BY created_at DESC
+     LIMIT 5'
+);
+
+$latestAnnouncements = $announcementsQuery->fetchAll();
+
+
+/* =====================================================
    RETURN DASHBOARD DATA
 ===================================================== */
 
@@ -299,6 +313,9 @@ echo json_encode([
 
         'recent_sales' =>
             $recentSales,
-'weekly_sales' => $weeklySales
-    ]
+
+        'weekly_sales' => $weeklySales
+    ],
+
+    'announcements' => $latestAnnouncements
 ]);
